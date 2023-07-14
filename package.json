@@ -1,0 +1,20 @@
+{
+  "name": "space-finder-aws-cdk",
+  "version": "1.0.0",
+  "description": "Project Serverless using AWS CDK with Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Hugo Carrizo Manzoni",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "aws-cdk": "^2.87.0",
+    "aws-cdk-lib": "^2.87.0",
+    "constructs": "^10.2.69",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
