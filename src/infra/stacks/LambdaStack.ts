@@ -1,7 +1,8 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
-import { Code, Function as LambdaFn, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Code, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { join } from 'path';
 
@@ -14,10 +15,10 @@ export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaProps) {
     super(scope, id, props);
 
-    const helloLambda = new LambdaFn(this, 'HelloLambda', {
+    const helloLambda = new NodejsFunction(this, 'HelloLambda', {
       runtime: Runtime.NODEJS_18_X,
-      handler: 'hello.mail',
-      code: Code.fromAsset(join(__dirname, '..', '..', 'services')),
+      handler: 'hello',
+      entry: join(__dirname, '..', '..', 'services', 'hello.ts'),
       environment: {
         TABLE_NAME: props.spacesTable.tableName,
       },
