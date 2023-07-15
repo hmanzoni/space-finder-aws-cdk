@@ -7,7 +7,7 @@ import { S3Client, ListBucketsCommand } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({});
 
-async function hanblder(event: APIGatewayProxyEvent, context: Context) {
+async function handler(event: APIGatewayProxyEvent, context: Context) {
   const command = new ListBucketsCommand({});
   const listBucketsResult = (await s3Client.send(command)).Buckets;
 
@@ -23,4 +23,4 @@ async function hanblder(event: APIGatewayProxyEvent, context: Context) {
   return resp;
 }
 
-export { hanblder };
+export { handler };
