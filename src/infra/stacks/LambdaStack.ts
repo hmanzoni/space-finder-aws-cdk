@@ -12,24 +12,42 @@ interface LambdaProps extends StackProps {
 }
 
 export class LambdaStack extends Stack {
-  public readonly helloLambdaIntegration: LambdaIntegration;
+  public readonly lambdaIntegration: LambdaIntegration;
   constructor(scope: Construct, id: string, props: LambdaProps) {
     super(scope, id, props);
 
-    const helloLambda = new NodejsFunction(this, 'HelloLambda', {
+    const spacesLambda = new NodejsFunction(this, 'SpacesLambda', {
       runtime: Runtime.NODEJS_18_X,
-      handler: 'hello',
-      entry: join(__dirname, '..', '..', 'services', 'hello.ts'),
+      handler: 'handler',
+      entry: join(__dirname, '..', '..', 'services', 'spaces', 'handler.ts'),
       environment: {
         TABLE_NAME: props.spacesTable.tableName,
       },
     });
-    const policyAllowS3Interaction = new PolicyStatement({
+
+    const policyAllowDDBInteraction = new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: ['s3:ListAllMyBuckets', 's3:ListBucket'],
-      resources: ['*'],
+      resources: [props.spacesTable.tableArn],
+      actions: ['dynamodb:PutItem'],
     });
-    helloLambda.addToRolePolicy(policyAllowS3Interaction);
-    this.helloLambdaIntegration = new LambdaIntegration(helloLambda);
+
+    spacesLambda.addToRolePolicy(policyAllowDDBInteraction);
+
+    // const helloLambda = new NodejsFunction(this, 'HelloLambda', {
+    //   runtime: Runtime.NODEJS_18_X,
+    //   handler: 'hello',
+    //   entry: join(__dirname, '..', '..', 'services', 'hello.ts'),
+    //   environment: {
+    //     TABLE_NAME: props.spacesTable.tableName,
+    //   },
+    // });
+    // const policyAllowS3Interaction = new PolicyStatement({
+    //   effect: Effect.ALLOW,
+    //   actions: ['s3:ListAllMyBuckets', 's3:ListBucket'],
+    //   resources: ['*'],
+    // });
+    // helloLambda.addToRolePolicy(policyAllowS3Interaction);
+    // this.lambdaIntegration = new LambdaIntegration(helloLambda);
+    this.lambdaIntegration = new LambdaIntegration(spacesLambda);
   }
 }
