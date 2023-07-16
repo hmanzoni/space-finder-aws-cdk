@@ -12,7 +12,6 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.119",
     "@types/node": "^20.4.2",
-    "@types/uuid": "^9.0.2",
     "aws-cdk": "^2.87.0",
     "aws-cdk-lib": "^2.87.0",
     "constructs": "^10.2.69",
@@ -21,8 +20,11 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.2",
     "@aws-sdk/client-dynamodb": "^3.370.0",
     "@aws-sdk/client-s3": "^3.370.0",
+    "@aws-sdk/lib-dynamodb": "^3.370.0",
+    "@aws-sdk/util-dynamodb": "^3.370.0",
     "uuid": "^9.0.0"
   }
 }
