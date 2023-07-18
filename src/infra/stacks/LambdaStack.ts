@@ -28,7 +28,13 @@ export class LambdaStack extends Stack {
     const policyAllowDDBInteraction = new PolicyStatement({
       effect: Effect.ALLOW,
       resources: [props.spacesTable.tableArn],
-      actions: ['dynamodb:PutItem'],
+      actions: [
+        'dynamodb:PutItem',
+        'dynamodb:GetItem',
+        'dynamodb:UpdateItem',
+        'dynamodb:DeleteItem',
+        'dynamodb:Scan',
+      ],
     });
 
     spacesLambda.addToRolePolicy(policyAllowDDBInteraction);
