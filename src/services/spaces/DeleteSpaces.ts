@@ -12,9 +12,7 @@ async function deleteSpaces(
       new DeleteItemCommand({
         TableName: process.env.TABLE_NAME,
         Key: {
-          id: {
-            S: spaceId,
-          },
+          id: { S: spaceId },
         },
       })
     );
