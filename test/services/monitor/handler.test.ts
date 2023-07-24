@@ -1,4 +1,4 @@
-import { handler } from '../../src/services/monitor/handler';
+import { handler } from '../../../src/services/monitor/handler';
 
 describe('Monitor lambda test test suit', () => {
   const festSpy = jest.spyOn(global, 'fetch');
