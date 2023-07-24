@@ -1,26 +1,30 @@
 import { App } from 'aws-cdk-lib';
 import { MonitorStack } from '../../src/infra/stacks/MonitorStack';
-import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Capture, Match, Template } from 'aws-cdk-lib/assertions';
 
 describe('Initial test suit', () => {
   let monitorStackTemplate: Template;
+
   beforeAll(() => {
     const testApp = new App({ outdir: 'cdk.out' });
     const monitorStack = new MonitorStack(testApp, 'MonitorStack');
     monitorStackTemplate = Template.fromStack(monitorStack);
   });
+
   test('Lambda properties', () => {
     monitorStackTemplate.hasResourceProperties('AWS::Lambda::Function', {
       Handler: 'index.handler',
       Runtime: 'nodejs18.x',
     });
   });
+
   test('Sns topic properties', () => {
     monitorStackTemplate.hasResourceProperties('AWS::SNS::Topic', {
       DisplayName: 'AlarmTopic',
       TopicName: 'AlarmTopic',
     });
   });
+
   test('Sns subscription properties', () => {
     monitorStackTemplate.hasResourceProperties(
       'AWS::SNS::Subscription',
@@ -35,6 +39,7 @@ describe('Initial test suit', () => {
       })
     );
   });
+
   test('Sns subscription properties - exact values', () => {
     const snsTopic = monitorStackTemplate.findResources('AWS::SNS::Topic');
     const snsTopicName = Object.keys(snsTopic)[0];
@@ -54,5 +59,16 @@ describe('Initial test suit', () => {
         },
       })
     );
+  });
+
+  test('Alarm action', () => {
+    const alarmActionsCapture = new Capture();
+    monitorStackTemplate.hasResourceProperties('AWS::CloudWatch::Alarm', {
+      AlarmActions: alarmActionsCapture,
+    });
+
+    expect(alarmActionsCapture.asArray()).toEqual([
+      { Ref: expect.stringMatching(/^AlarmTopic/) },
+    ]);
   });
 });
