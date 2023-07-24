@@ -1,0 +1,31 @@
+@url = API_GW_ENDPOINT
+@token = JWT_TOKEN
+@ItemDynamoID = ITEM_ID
+
+GET {{url}}/spaces
+Authorization: {{token}}
+###
+
+POST {{url}}/spaces
+content-type: application/json
+
+ {
+    "location": "Dublin",
+    "name": "Best location"
+ }
+###
+
+GET {{url}}/spaces?id=ItemDynamoID
+###
+
+PUT {{url}}/spaces?id=ItemDynamoID
+content-type: application/json
+
+ {
+    "name": "Best location 5"
+ }
+###
+
+DELETE {{url}}/spaces?id=ItemDynamoID
+Authorization: {{token}}
+###
