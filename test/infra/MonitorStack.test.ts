@@ -71,4 +71,20 @@ describe('Initial test suit', () => {
       { Ref: expect.stringMatching(/^AlarmTopic/) },
     ]);
   });
+
+  test('Monitor stack snapshot', () => {
+    expect(monitorStackTemplate.toJSON()).toMatchSnapshot();
+  });
+
+  test('Lambda stack snapshot', () => {
+    const template = monitorStackTemplate.findResources(
+      'AWS::Lambda::Function'
+    );
+    expect(template).toMatchSnapshot();
+  });
+
+  test('Sns stack snapshot', () => {
+    const template = monitorStackTemplate.findResources('AWS::SNS::Topic');
+    expect(template).toMatchSnapshot();
+  });
 });
